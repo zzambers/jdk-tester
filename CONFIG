@@ -1,0 +1,3 @@
+JDK_REPO=zzambers/jdk17u-dev
+JDK_REF=p11-signature-debug-fix
+JDK_TEST=jdk_security
