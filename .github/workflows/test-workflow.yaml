@@ -1,0 +1,58 @@
+name: "test"
+
+on:
+  push:
+    branches:
+      - "jdk*"
+    tags:
+      - "jdk*"
+
+jobs:
+  test-jdk:
+    name: "Test JDK"
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v2
+      - name: read config
+        run: |
+          . CONFIG
+          [ -n "${JDK_REPO}" ]
+          [ -n "${JDK_REF}" ]
+          [ -n "${JDK_TEST}" ]
+          echo "JDK_REPO=${JDK_REPO}" >> $GITHUB_ENV
+          echo "JDK_REF=${JDK_REF}" >> $GITHUB_ENV
+          echo "JDK_TEST=${JDK_TEST}" >> $GITHUB_ENV
+      - name: clone jdk
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ env.JDK_REPO }}
+          path: jdk
+          ref: ${{ env.JDK_REF }}
+      - name: Detect JDK version
+        run: |
+          . ./helper-funcs.sh
+          detectVersionsGH
+      - name: Install boot jdk
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: ${{ env.BOOT_JDK_VER }}
+      - name: Install build deps
+        run: |
+          sudo apt-get install build-essential libfreetype6-dev libcups2-dev libx11-dev libxext-dev libxrender-dev libxrandr-dev libxtst-dev libxt-dev libasound2-dev libffi-dev autoconf
+      - name: Prepare Jtreg
+        run: |
+          . ./helper-funcs.sh
+          prepareJtreg
+      - name: Configure JDK
+        run: |
+          . ./helper-funcs.sh
+          conigureJdk
+      - name: Build JDK
+        run: |
+          . ./helper-funcs.sh
+          buildJdk
+      - name: Test JDK
+        run: |
+          . ./helper-funcs.sh
+          testJdk
