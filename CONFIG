@@ -1,0 +1,3 @@
+JDK_REPO=zzambers/jdk17u-dev
+JDK_REF=tls-1-3-user-canceled-fix
+JDK_TEST=jdk_security
