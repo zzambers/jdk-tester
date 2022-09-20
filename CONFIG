@@ -1,0 +1,3 @@
+JDK_REPO=zzambers/jdk17u-dev
+JDK_REF=race-condition-pkcs11-sessionmanager
+JDK_TEST=jdk_security
