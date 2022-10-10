@@ -123,8 +123,11 @@ buildJdk() {
 testJdk() {
     pushd jdk
     if [ "${JDK_VER}" -ge 11 ] ; then
-        make run-test TEST="${JDK_TEST}"
+        make run-test TEST="${JDK_TEST}" \
+        JTREG="JAVA_OPTIONS=-Djdk.test.docker.image.name=ubuntu -Djdk.test.docker.image.version=latest"
     else
+        JAVA_ARGS="-Djdk.test.docker.image.name=ubuntu -Djdk.test.docker.image.version=latest" \
+        JTREG_TIMEOUT_FACTOR="4" \
         make test TEST="${JDK_TEST}"
     fi
     popd
