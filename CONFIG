@@ -1,0 +1,3 @@
+JDK_REPO=openjdk/jdk17u-dev
+JDK_REF=master
+JDK_TEST=compiler/rtm
