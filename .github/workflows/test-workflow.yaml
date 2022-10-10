@@ -56,3 +56,16 @@ jobs:
         run: |
           . ./helper-funcs.sh
           testJdk
+        continue-on-error: true
+      - name: Pack results
+        if: always()
+        run: |
+          . ./helper-funcs.sh
+          packResults
+        continue-on-error: true
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          path: test-results.tar.gz
+        continue-on-error: true

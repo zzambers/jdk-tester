@@ -129,3 +129,11 @@ testJdk() {
     fi
     popd
 }
+
+packResults() {
+    if [ "${JDK_VER}" -ge 11 ] ; then
+        tar -C build/* -cf "test-results.tar.gz" test-results test-support
+    else
+        tar -C build/* -cf "test-results.tar.gz" testoutput
+    fi
+}
