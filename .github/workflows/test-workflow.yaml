@@ -28,6 +28,10 @@ jobs:
           repository: ${{ env.JDK_REPO }}
           path: jdk
           ref: ${{ env.JDK_REF }}
+      - name: system info
+        run: |
+          uname -a
+          cat /proc/cpuinfo
       - name: Detect JDK version
         run: |
           . ./helper-funcs.sh
