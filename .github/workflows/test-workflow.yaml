@@ -43,7 +43,7 @@ jobs:
           java-version: ${{ env.BOOT_JDK_VER }}
       - name: Install build deps
         run: |
-          sudo apt-get install build-essential libfreetype6-dev libcups2-dev libx11-dev libxext-dev libxrender-dev libxrandr-dev libxtst-dev libxt-dev libasound2-dev libffi-dev autoconf
+          sudo apt-get install build-essential gcc-9-multilib g++-9-multilib libfreetype6-dev:i386 libcups2-dev:i386 libx11-dev:i386 libxext-dev:i386 libxrender-dev:i386 libxrandr-dev:i386 libxtst-dev:i386 libxt-dev:i386 libasound2-dev:i386 libffi-dev:i386 autoconf
       - name: Prepare Jtreg
         run: |
           . ./helper-funcs.sh

@@ -107,9 +107,9 @@ prepareJtreg() {
 conigureJdk() {
     pushd jdk
     if [ "${JDK_VER}" -ge 11 ] ; then
-        bash configure --with-boot-jdk="${JAVA_HOME}" --disable-warnings-as-errors --with-jtreg=../jtreg
+        bash configure --with-target-bits=32 --with-boot-jdk="${JAVA_HOME}" --disable-warnings-as-errors --with-jtreg=../jtreg
     else
-        bash configure --with-boot-jdk="${JAVA_HOME}" --with-jtreg=../jtreg
+        bash configure --with-target-bits=32 --with-boot-jdk="${JAVA_HOME}" --with-jtreg=../jtreg
     fi
     popd
 }
