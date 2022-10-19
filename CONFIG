@@ -1,0 +1,3 @@
+JDK_REPO=openjdk/shenandoah-jdk8u
+JDK_REF=master
+JDK_TEST=jdk_tier1
