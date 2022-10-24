@@ -1,0 +1,3 @@
+JDK_REPO=openjdk/jdk9u
+JDK_REF=master
+JDK_TEST=langtools/tier1
