@@ -8,9 +8,112 @@ on:
       - "jdk*"
 
 jobs:
+  test-jdk-win:
+    name: "Test JDK Win32"
+    runs-on: "windows-2019"
+    steps:
+      - uses: actions/checkout@v2
+      - uses: msys2/setup-msys2@v2
+        with:
+          release: false
+          install: base-devel curl tar zip unzip p7zip autotools make
+      - name: read config
+        shell: msys2 {0}
+        run: |
+          . CONFIG
+          [ -n "${JDK_REPO}" ]
+          [ -n "${JDK_REF}" ]
+          [ -n "${JDK_TEST}" ]
+          echo "JDK_REPO=${JDK_REPO}" >> $GITHUB_ENV
+          echo "JDK_REF=${JDK_REF}" >> $GITHUB_ENV
+          echo "JDK_TEST=${JDK_TEST}" >> $GITHUB_ENV
+      - name: clone jdk
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ env.JDK_REPO }}
+          path: jdk
+          ref: ${{ env.JDK_REF }}
+      - name: Detect JDK version
+        shell: msys2 {0}
+        run: |
+          . ./helper-funcs.sh
+          detectVersionsGH
+      - name: Install boot jdk
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: ${{ env.BOOT_JDK_VER }}
+      - name: Cache VS2010Express1.iso
+        uses: actions/cache@v3
+        with:
+          path: |
+            VS2010Express1.iso
+          key: VS2010Express1.iso
+      - name: Download and unpack VS2010Express1.iso
+        shell: msys2 {0}
+        run: |
+          set -eux
+          if ! [ -f "VS2010Express1.iso" ] ; then
+              # Orig Url: https://web.archive.org/web/20140227220734if_/http://download.microsoft.com/download/1/E/5/1E5F1C0A-0D5B-426A-A603-1798B951DDAE/VS2010Express1.iso
+              # https://github.com/Winetricks/winetricks/issues/950
+              curl -f -L -o "VS2010Express1.iso" "https://debian.fmi.uni-sofia.bg/~aangelov/VS2010Express1.iso"
+          fi
+          mkdir VS2010Express1
+          7z x -oVS2010Express1 "VS2010Express1.iso"
+      - name: Install VS2010Express
+        run: |
+          Start-Process -FilePath "VS2010Express1\VCExpress\setup.exe" -ArgumentList "/q /norestart" -Wait -NoNewWindow
+      - name: Prepare Jtreg
+        shell: msys2 {0}
+        run: |
+          . ./helper-funcs.sh
+          prepareJtreg
+      - name: Checkout the FreeType source
+        uses: actions/checkout@v3
+        with:
+          repository: "freetype/freetype"
+          ref: VER-2-8-1
+          path: freetype
+      - name: Configure JDK
+        shell: msys2 {0}
+        run: |
+          pushd jdk
+          MSYS2_ARG_CONV_EXCL="-Fe${GITHUB_WORKSPACE%%:*}:/" bash ./configure --with-conf-name=win-x86 --with-boot-jdk="$( cygpath "${JAVA_HOME}" )" --with-toolchain-version=2010 --with-msvcr-dll="$( cygpath 'C:\Windows\SysWOW64\msvcr100.dll' )" --with-target-bits=32 --with-jtreg="$( cygpath "../jtreg" )" # --with-freetype-src="${GITHUB_WORKSPACE}/freetype"
+          popd
+      - name: Build JDK
+        shell: msys2 {0}
+        run: |
+          # running into (why?):
+          # https://github.com/adoptium/infrastructure/issues/1284
+          #. ./helper-funcs.sh
+          #buildJdk
+          pushd jdk
+          MSYS2_ARG_CONV_EXCL="${GITHUB_WORKSPACE}" make images
+          popd
+      - name: Test JDK
+        shell: msys2 {0}
+        run: |
+          . ./helper-funcs.sh
+          testJdk
+      - name: Pack results
+        if: always()
+        shell: msys2 {0}
+        run: |
+          . ./helper-funcs.sh
+          packResults
+        continue-on-error: true
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          path: test-results.tar.gz
+        continue-on-error: true
+
+
   test-jdk:
     name: "Test JDK"
     runs-on: "ubuntu-latest"
+    if: false
     steps:
       - uses: actions/checkout@v2
       - name: read config
