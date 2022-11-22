@@ -38,14 +38,19 @@ jobs:
       - name: clone jdk
         uses: actions/checkout@v3
         with:
-          repository: openjdk/jdk11u-dev
+          repository: zzambers/jdk11u-dev
           path: jdk
-          ref: master
+          ref: vs2010-fix
       - name: Install boot jdk
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: 11
+      - name: Prepare Jtreg
+        run: |
+          $env:Path = "$HOME\cygwin\cygwin64\bin;$env:Path" ;
+          curl -L -f -o jtreg.zip "https://builds.shipilev.net/jtreg/jtreg-6.1+2.zip" ;
+          & unzip jtreg.zip
       - name: Restore Visual Studio 2010 from cache
         id: vs2010
         uses: actions/cache@v3
@@ -63,18 +68,13 @@ jobs:
       - name: Install VS2010Express
         run: |
           Start-Process -FilePath "VS2010Express1\VCExpress\setup.exe" -ArgumentList "/q /norestart" -Wait -NoNewWindow
-      - name: Prepare Jtreg
-        run: |
-          $env:Path = "$HOME\cygwin\cygwin64\bin;$env:Path" ;
-          curl -L -f -o jtreg.zip "https://builds.shipilev.net/jtreg/${jtregName}.zip" ;
-          & unzip jtreg.zip
       - name: Configure JDK
         run: >
           $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
           $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
           $env:BOOT_JDK = cygpath "$env:JAVA_HOME" ;
           $env:LIBMSVCR = cygpath 'C:\Windows\SysWOW64\msvcr100.dll' ;
-          $env:JT_HOME = cygpath "$HOME/jtreg" ;
+          $env:JT_HOME = cygpath "$env:GITHUB_WORKSPACE/jtreg" ;
           & bash configure
           --with-toolchain-version=2010
           --with-msvcr-dll="$env:LIBMSVCR"
