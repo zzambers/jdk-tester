@@ -64,7 +64,7 @@ jobs:
         id: vs2017
         uses: actions/cache@v3
         with:
-          path: ~/${{ env.VS2017_FILENAME }}
+          path: ~/vs2017.exe
           key: vs2017
       - name: Download Visual Studio 2017
         run: |
