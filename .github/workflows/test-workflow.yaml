@@ -38,9 +38,9 @@ jobs:
       - name: clone jdk
         uses: actions/checkout@v3
         with:
-          repository: openjdk/jdk11u-dev
+          repository: zzambers/jdk11u-dev
           path: jdk
-          ref: master
+          ref: metaspace-fix
       - name: Install boot jdk
         uses: actions/setup-java@v3
         with:
