@@ -38,9 +38,9 @@ jobs:
       - name: clone jdk
         uses: actions/checkout@v3
         with:
-          repository: zzambers/jdk11u-dev
+          repository: openjdk/jdk11u-dev
           path: jdk
-          ref: vs2010-fix
+          ref: master
       - name: Install boot jdk
         uses: actions/setup-java@v3
         with:
@@ -87,21 +87,23 @@ jobs:
           & bash configure
           --with-toolchain-version=2017
           --with-target-bits=32
+          --with-jvm-features=shenandoahgc
           --with-boot-jdk="$env:BOOT_JDK"
-          --with-jtreg="$env:JT_HOME" ;
+          --with-jtreg="$env:JT_HOME"
+          --enable-jtreg-failure-handler ;
           bash -c "cat $(find -name config.log)"
         working-directory: jdk
       - name: Build JDK
         run: |
           $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
           $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
-          & make images
+          & make all
         working-directory: jdk
       - name: Test JDK
         run: >
           $env:Path = "$HOME\cygwin\cygwin64\bin;$HOME\cygwin\cygwin64\bin;$env:Path" ;
           $env:Path = $env:Path -split ";" -match "C:\\Windows|PowerShell|cygwin" -join ";" ;
-          & make run-test "TEST=hotspot_tier1"
+          & make run-test "TEST=hotspot:tier1"
         working-directory: jdk
       - name: Pack results
         if: always()
