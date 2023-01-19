@@ -19,4 +19,4 @@ eg:
  * https://github.com/zzambers/jdk-tester/commit/483745f968d63e8ffb4f06fb17c6c253a90de2e6
  * https://github.com/judovana/jdk-tester/blob/jdk-judovana-backport-63eb0b7e/CONFIG
 
-After you commit, you should see your jdk8 built and tested in your actioons (no PR needed)
+After you commit, you should see your jdk built and tested in your actioons (no PR needed)
