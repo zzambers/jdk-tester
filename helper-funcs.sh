@@ -91,7 +91,7 @@ prepareJtreg() {
       6.2)
         jtregName="jtreg-6.2+1"
         ;;
-      7)
+      7|7.*)
         jtregName="jtreg-7.1.1+1"
         ;;
       *)
