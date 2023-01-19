@@ -1,0 +1,3 @@
+JDK_REPO=openjdk/jdk
+JDK_REF=master
+JDK_TEST=tier1
