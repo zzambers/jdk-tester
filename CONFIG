@@ -1,0 +1,3 @@
+JDK_REPO=openjdk/jdk8u-dev
+JDK_REF=master
+JDK_TEST=hotspot_tier1
