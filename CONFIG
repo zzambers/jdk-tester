@@ -1,3 +1,3 @@
-JDK_REPO=openjdk/jdk11u-dev
-JDK_REF=master
+JDK_REPO=openjdk-bots/jdk11u-dev
+JDK_REF=zzambers-backport-2f7e673f
 JDK_TEST=jdk_security
