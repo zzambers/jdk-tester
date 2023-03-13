@@ -1,0 +1,3 @@
+JDK_REPO=openjdk-bots/jdk8u-dev
+JDK_REF=zzambers-backport-e80528bf
+JDK_TEST=jdk_security
