@@ -1,0 +1,3 @@
+JDK_REPO=zzambers/jdk8u-dev
+JDK_REF=jtreg-lib-wip
+JDK_TEST=jdk_jfr
