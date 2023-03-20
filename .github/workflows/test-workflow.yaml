@@ -43,6 +43,7 @@ jobs:
           java-version: ${{ env.BOOT_JDK_VER }}
       - name: Install build deps
         run: |
+          sudo apt-get update
           sudo apt-get -y install build-essential libfreetype6-dev libcups2-dev libx11-dev libxext-dev libxrender-dev libxrandr-dev libxtst-dev libxt-dev libasound2-dev libffi-dev autoconf krb5-user
       - name: Prepare Jtreg
         run: |
