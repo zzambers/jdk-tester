@@ -94,7 +94,7 @@ prepareJtreg() {
         jtregName="jtreg-6.2+1"
         ;;
       7|7.*)
-        jtregName="jtreg-7.1.1+1"
+        jtregName="jtreg-7.2+1"
         ;;
       *)
         printf "Unsupported Jtreg version %s!\n" "${JTREG_VER}" 2>&1
