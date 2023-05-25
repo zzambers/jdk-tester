@@ -1,3 +1,3 @@
 JDK_REPO=zzambers/jdk
 JDK_REF=containers-rpm-config-fix-rebased
-JDK_TEST="hotspot_containers hotspot_containers_extended jdk_containers_extended"
+JDK_TEST="test/jdk/jdk/internal/platform test/hotspot/jtreg/containers"
