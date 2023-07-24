@@ -1,0 +1,3 @@
+JDK_REPO=zzambers/jdk11u-dev
+JDK_REF=keytool-rsa
+JDK_TEST="test/jdk/sun/security/tools/keytool/KeyToolTest.java"
