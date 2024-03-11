@@ -1,4 +1,4 @@
 # Example:
-# JDK_REPO=openjdk/jdk
-# JDK_REF=master
-# JDK_TEST=jdk_security
+JDK_REPO=openjdk/jdk
+JDK_REF=master
+JDK_TEST=jdk_security_infra
