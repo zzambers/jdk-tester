@@ -59,8 +59,10 @@ getBootJdkVer() {
         echo 17
     elif [ "$1" -lt 20 ] ; then
         echo 19
-    else
+    elif [ "$1" -lt 21 ] ; then
         echo 20
+    else
+        echo 21
     fi
 }
 
